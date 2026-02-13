@@ -1820,7 +1820,7 @@ void BK4819_PlayDTMFEx(bool bLocalLoopback, char Code)
 
 void BK4819_FskSend(void)
 {
-	GPIO_SetBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+	BK4819_EnableTXLink();
 
 	BK4819_WriteRegister(BK4819_REG_58, 0x2F03);
 	BK4819_WriteRegister(BK4819_REG_72, 12389u);
@@ -1845,5 +1845,5 @@ void BK4819_FskSend(void)
 	BK4819_WriteRegister(BK4819_REG_70, 0);
 	BK4819_WriteRegister(BK4819_REG_58, 0);
 
-	GPIO_ClearBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+	BK4819_TurnsOffTones_TurnsOnRX();
 }

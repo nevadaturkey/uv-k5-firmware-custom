@@ -365,7 +365,7 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 
 		case MENU_FSK_MSG:
 			*pMin = 0;
-			*pMax = 0;
+			*pMax = 31;
 			break;
 
 		default:
@@ -617,7 +617,10 @@ void MENU_AcceptSetting(void)
 			break;
 
 		case MENU_FSK_MSG:
-			BK4819_FskSend();
+			if (gFskTxLen > 0)
+				BK4819_FskSend((const uint8_t *)gFskTxBuf, gFskTxLen);
+			else
+				BK4819_FskSend((const uint8_t *)"AG_TEST!", 8);
 			break;
 
 		case MENU_COMPAND:
@@ -1172,7 +1175,8 @@ void MENU_ShowCurrentSetting(void)
 		}
 
 		case MENU_FSK_MSG:
-			gSubMenuSelection = 0;
+			gSubMenuSelection = gFskTxLen;
+			BK4819_FskEnableRx();
 			break;
 
 		default:

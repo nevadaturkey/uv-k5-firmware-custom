@@ -703,6 +703,29 @@ static void CheckRadioInterrupts(void)
 			AIRCOPY_StorePacket();
 		}
 #endif
+
+		// FSK RX handler
+		if (interrupts.fskRxSync) {
+			gFSKWriteIndex = 0;
+			gFskRxLen = 0;
+		}
+
+		if (interrupts.fskFifoAlmostFull) {
+			for (uint8_t i = 0; i < 4 && gFSKWriteIndex < 32; i++) {
+				const uint16_t word = BK4819_ReadRegister(BK4819_REG_5F);
+				if (gFSKWriteIndex < 31) {
+					gFskRxBuf[gFSKWriteIndex++] = word & 0xFF;
+					gFskRxBuf[gFSKWriteIndex++] = (word >> 8) & 0xFF;
+				}
+			}
+		}
+
+		if (interrupts.fskRxFinied) {
+			gFskRxLen = gFSKWriteIndex;
+			gFskRxReady = true;
+			gFSKWriteIndex = 0;
+			gUpdateDisplay = true;
+		}
 	}
 }
 

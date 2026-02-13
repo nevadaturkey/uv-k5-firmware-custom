@@ -24,6 +24,7 @@
 #include "helper/battery.h"
 #include "misc.h"
 #include "settings.h"
+#include "app/flashlight.h"
 
 #include "driver/backlight.h"
 #include "bsp/dp32g030/gpio.h"
@@ -55,6 +56,15 @@ void SystickHandler(void)
 
 	if ((gGlobalSysTickCounter % 50) == 0) {
 		gNextTimeslice_500ms = true;
+
+		if (FUNCTION_IsRx() && gEeprom.FLASH_BLINK_EN) {
+			GPIO_FlipBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+		} else {
+             // Ensure flashlight is off when not receiving (and not manually turned on)
+            if (gFlashLightState == FLASHLIGHT_OFF) {
+			    GPIO_ClearBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+            }
+		}
 		
 		DECREMENT_AND_TRIGGER(gTxTimerCountdown_500ms, gTxTimeoutReached);
 		DECREMENT(gSerialConfigCountDown_500ms);

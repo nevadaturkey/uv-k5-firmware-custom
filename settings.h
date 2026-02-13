@@ -175,7 +175,7 @@ typedef struct {
 	uint8_t               SCANLIST_PRIORITY_CH1[2];
 	uint8_t               SCANLIST_PRIORITY_CH2[2];
 
-	uint8_t               field29_0x26;
+	bool                  FLASH_BLINK_EN;
 	uint8_t               field30_0x27;
 	
 	uint8_t               field37_0x32;

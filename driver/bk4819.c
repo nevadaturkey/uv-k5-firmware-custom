@@ -1818,8 +1818,10 @@ void BK4819_PlayDTMFEx(bool bLocalLoopback, char Code)
 	BK4819_ExitTxMute();
 }
 
-void BK4819_FskSend(void)
+void BK4819_FskSend(const uint8_t *data, uint8_t len)
 {
+	if (len == 0 || len > 32) return;
+
 	// RX off/PA on
 	gBK4819_GpioOutState &= ~0x40;
 	gBK4819_GpioOutState |=  0x20;
@@ -1834,17 +1836,20 @@ void BK4819_FskSend(void)
 	BK4819_WriteRegister(BK4819_REG_58, 0x2F03);
 	BK4819_WriteRegister(BK4819_REG_72, 12389u);
 	BK4819_WriteRegister(BK4819_REG_70, 0x00E0);
-	BK4819_WriteRegister(BK4819_REG_5D, 0x0800);
+	BK4819_WriteRegister(BK4819_REG_5D, (len / 2) << 8);
 	BK4819_WriteRegister(BK4819_REG_59, 0x8068);
 	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
 	BK4819_WriteRegister(BK4819_REG_5A, 0x3072);
 	BK4819_WriteRegister(BK4819_REG_5B, 0x576C);
 	BK4819_WriteRegister(BK4819_REG_5C, 0x5625);
 
-	BK4819_WriteRegister(BK4819_REG_5F, 0x4741);
-	BK4819_WriteRegister(BK4819_REG_5F, 0x545F);
-	BK4819_WriteRegister(BK4819_REG_5F, 0x5345);
-	BK4819_WriteRegister(BK4819_REG_5F, 0x2154);
+	// Write data to FIFO (16-bit words, little-endian)
+	for (uint8_t i = 0; i < len; i += 2) {
+		uint16_t word = data[i];
+		if (i + 1 < len)
+			word |= (uint16_t)data[i + 1] << 8;
+		BK4819_WriteRegister(BK4819_REG_5F, word);
+	}
 
 	SYSTEM_DelayMs(20);
 	BK4819_WriteRegister(BK4819_REG_59, 0x0868);
@@ -1860,4 +1865,28 @@ void BK4819_FskSend(void)
 	BK4819_WriteRegister(BK4819_REG_33, gBK4819_GpioOutState);
 
 	BK4819_TurnsOffTones_TurnsOnRX();
+}
+
+void BK4819_FskEnableRx(void)
+{
+	BK4819_WriteRegister(BK4819_REG_58, 0x37C3);
+	BK4819_WriteRegister(BK4819_REG_72, 12389u);
+	BK4819_WriteRegister(BK4819_REG_70, 0x00E0);
+	BK4819_WriteRegister(BK4819_REG_5D, 0x1000);
+	BK4819_WriteRegister(BK4819_REG_5E, 0x0004);
+	BK4819_WriteRegister(BK4819_REG_59, 0x8068);
+	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
+	BK4819_WriteRegister(BK4819_REG_5A, 0x3072);
+	BK4819_WriteRegister(BK4819_REG_5B, 0x576C);
+	BK4819_WriteRegister(BK4819_REG_5C, 0x5625);
+
+	// Enable FSK RX interrupts
+	BK4819_WriteRegister(BK4819_REG_3F,
+		BK4819_ReadRegister(BK4819_REG_3F)
+		| (1u << 1)    // FSK RX Sync
+		| (1u << 12)   // FSK FIFO Almost Full
+		| (1u << 13)); // FSK RX Finished
+
+	// Enable RX
+	BK4819_WriteRegister(BK4819_REG_59, 0x0868);
 }

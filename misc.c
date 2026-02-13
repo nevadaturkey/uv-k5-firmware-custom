@@ -214,6 +214,11 @@ uint8_t           gMenuListCount;
 uint8_t           gBackup_CROSS_BAND_RX_TX;
 uint8_t           gScanDelay_10ms;
 uint8_t           gFSKWriteIndex;
+uint8_t           gFskRxBuf[32];
+uint8_t           gFskRxLen;
+bool              gFskRxReady;
+char              gFskTxBuf[32];
+uint8_t           gFskTxLen;
 
 #ifdef ENABLE_NOAA
 	bool          gIsNoaaMode;

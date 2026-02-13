@@ -516,7 +516,16 @@ void UI_DisplayMenu(void)
 			break;
 
 		case MENU_FSK_MSG:
-			strcpy(String, "SEND");
+			if (gFskRxReady && gFskRxLen > 0) {
+				// Show first 6 bytes as hex
+				uint8_t n = gFskRxLen > 6 ? 6 : gFskRxLen;
+				for (uint8_t i = 0; i < n; i++)
+					sprintf(String + i * 3, "%02X ", gFskRxBuf[i]);
+			} else if (gFskTxLen > 0) {
+				sprintf(String, "TX:%d", gFskTxLen);
+			} else {
+				strcpy(String, "SEND");
+			}
 			break;
 
 		case MENU_STEP: {

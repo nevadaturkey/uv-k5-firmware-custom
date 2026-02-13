@@ -1,0 +1,8 @@
+Sistem belirtilen yolu bulamyor.
+make[1]: [C:\Users\ADMINI~1\AppData\Local\Temp\ccOEDcno.ltrans0.ltrans.o] Hata 1 (yoksayıldı)
+Sistem belirtilen yolu bulamyor.
+make[1]: [C:\Users\ADMINI~1\AppData\Local\Temp\ccOEDcno.ltrans1.ltrans.o] Hata 1 (yoksayıldı)
+C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld.exe: firmware section `.text' will not fit in region `FLASH'
+C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld.exe: region `FLASH' overflowed by 212 bytes
+collect2.exe: error: ld returned 1 exit status
+make: *** [firmware] Hata 1

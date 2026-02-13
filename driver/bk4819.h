@@ -175,6 +175,7 @@ void     BK4819_ExitTxMute(void);
 void     BK4819_EnableTXLink(void);
 void     BK4819_PlayTone(uint16_t Frequency, bool bTuningGainSwitch);
 void     BK4819_TurnsOffTones_TurnsOnRX(void);
-void     BK4819_FskSend(void);
+void     BK4819_FskSend(const uint8_t *data, uint8_t len);
+void     BK4819_FskEnableRx(void);
 
 #endif

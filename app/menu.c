@@ -617,7 +617,6 @@ void MENU_AcceptSetting(void)
 			break;
 
 		case MENU_FSK_MSG:
-			// Send a test message "123"
 			BK4819_FskSend();
 			break;
 
@@ -1171,6 +1170,10 @@ void MENU_ShowCurrentSetting(void)
 			}
 			break;
 		}
+
+		case MENU_FSK_MSG:
+			gSubMenuSelection = 0;
+			break;
 
 		default:
 			return;

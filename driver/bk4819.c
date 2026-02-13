@@ -1822,12 +1822,15 @@ void BK4819_FskSend(void)
 {
 	GPIO_SetBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
 
+	BK4819_WriteRegister(BK4819_REG_58, 0x2F03);
+	BK4819_WriteRegister(BK4819_REG_72, 12389u);
 	BK4819_WriteRegister(BK4819_REG_70, 0x00E0);
-	BK4819_WriteRegister(BK4819_REG_72, 0x3065);
-	BK4819_WriteRegister(BK4819_REG_58, 0x37C3);
 	BK4819_WriteRegister(BK4819_REG_5D, 0x0800);
 	BK4819_WriteRegister(BK4819_REG_59, 0x8068);
 	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
+	BK4819_WriteRegister(BK4819_REG_5A, 0x3072);
+	BK4819_WriteRegister(BK4819_REG_5B, 0x576C);
+	BK4819_WriteRegister(BK4819_REG_5C, 0x5625);
 
 	BK4819_WriteRegister(BK4819_REG_5F, 0x4741);
 	BK4819_WriteRegister(BK4819_REG_5F, 0x545F);
@@ -1836,7 +1839,7 @@ void BK4819_FskSend(void)
 
 	SYSTEM_DelayMs(20);
 	BK4819_WriteRegister(BK4819_REG_59, 0x0868);
-	SYSTEM_DelayMs(180);
+	SYSTEM_DelayMs(200);
 
 	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
 	BK4819_WriteRegister(BK4819_REG_70, 0);

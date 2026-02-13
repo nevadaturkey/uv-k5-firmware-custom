@@ -50,7 +50,7 @@ const char gModulationStr[MODULATION_UKNOWN][4] = {
 
 #ifdef ENABLE_BYP_RAW_DEMODULATORS
 	[MODULATION_BYP]="BYP",
-	[MODULATION_RAW]="RAW"
+	[MODULATION_RAW]="FSK"
 #endif
 };
 

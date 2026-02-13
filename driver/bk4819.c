@@ -1817,3 +1817,30 @@ void BK4819_PlayDTMFEx(bool bLocalLoopback, char Code)
 
 	BK4819_ExitTxMute();
 }
+
+void BK4819_FskSend(void)
+{
+	GPIO_SetBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+
+	BK4819_WriteRegister(BK4819_REG_70, 0x00E0);
+	BK4819_WriteRegister(BK4819_REG_72, 0x3065);
+	BK4819_WriteRegister(BK4819_REG_58, 0x37C3);
+	BK4819_WriteRegister(BK4819_REG_5D, 0x0800);
+	BK4819_WriteRegister(BK4819_REG_59, 0x8068);
+	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
+
+	BK4819_WriteRegister(BK4819_REG_5F, 0x4741);
+	BK4819_WriteRegister(BK4819_REG_5F, 0x545F);
+	BK4819_WriteRegister(BK4819_REG_5F, 0x5345);
+	BK4819_WriteRegister(BK4819_REG_5F, 0x2154);
+
+	SYSTEM_DelayMs(20);
+	BK4819_WriteRegister(BK4819_REG_59, 0x0868);
+	SYSTEM_DelayMs(180);
+
+	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
+	BK4819_WriteRegister(BK4819_REG_70, 0);
+	BK4819_WriteRegister(BK4819_REG_58, 0);
+
+	GPIO_ClearBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+}

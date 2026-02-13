@@ -227,6 +227,7 @@ void SETTINGS_InitEEPROM(void)
 		gEeprom.SCANLIST_PRIORITY_CH1[i] =  Data[j + 1];
 		gEeprom.SCANLIST_PRIORITY_CH2[i] =  Data[j + 2];
 	}
+	gEeprom.FLASH_BLINK_EN = (Data[7] < 2) ? Data[7] : false;
 
 	// 0F40..0F47
 	EEPROM_ReadBuffer(0x0F40, Data, 8);
@@ -567,7 +568,7 @@ void SETTINGS_SaveSettings(void)
 	State[4] = gEeprom.SCAN_LIST_ENABLED[1];
 	State[5] = gEeprom.SCANLIST_PRIORITY_CH1[1];
 	State[6] = gEeprom.SCANLIST_PRIORITY_CH2[1];
-	State[7] = 0xFF;
+	State[7] = gEeprom.FLASH_BLINK_EN;
 	EEPROM_WriteBuffer(0x0F18, State);
 
 	memset(State, 0xFF, sizeof(State));

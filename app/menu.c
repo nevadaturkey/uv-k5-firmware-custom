@@ -363,6 +363,11 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 			*pMax = gSubMenu_SIDEFUNCTIONS_size-1;
 			break;
 
+		case MENU_FSK_MSG:
+			*pMin = 0;
+			*pMax = 0;
+			break;
+
 		default:
 			return -1;
 	}
@@ -606,6 +611,15 @@ void MENU_AcceptSetting(void)
 				gSetting_mic_bar = gSubMenuSelection;
 				break;
 		#endif
+
+		case MENU_FL_BLINK:
+			gEeprom.FLASH_BLINK_EN = gSubMenuSelection;
+			break;
+
+		case MENU_FSK_MSG:
+			// Send a test message "123"
+			BK4819_FskSend();
+			break;
 
 		case MENU_COMPAND:
 			gTxVfo->Compander = gSubMenuSelection;

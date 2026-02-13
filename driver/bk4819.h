@@ -169,5 +169,12 @@ void     BK4819_Enable_AfDac_DiscMode_TxDsp(void);
 void     BK4819_GetVoxAmp(uint16_t *pResult);
 void     BK4819_SetScrambleFrequencyControlWord(uint32_t Frequency);
 void     BK4819_PlayDTMFEx(bool bLocalLoopback, char Code);
+void     BK4819_SetAF(BK4819_AF_Type_t AF);
+void     BK4819_EnterTxMute(void);
+void     BK4819_ExitTxMute(void);
+void     BK4819_EnableTXLink(void);
+void     BK4819_PlayTone(uint16_t Frequency, bool bTuningGainSwitch);
+void     BK4819_TurnsOffTones_TurnsOnRX(void);
+void     BK4819_FskSend(void);
 
 #endif

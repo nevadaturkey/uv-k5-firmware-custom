@@ -79,6 +79,8 @@ const t_menu_item MenuList[] =
 #ifdef ENABLE_AUDIO_BAR
 	{"MicBar", VOICE_ID_INVALID,                       MENU_MIC_BAR       },
 #endif
+	{"FLBlnk", VOICE_ID_INVALID,                       MENU_FL_BLINK      },
+	{"FSKMsg", VOICE_ID_INVALID,                       MENU_FSK_MSG       },
 	{"ChDisp", VOICE_ID_INVALID,                       MENU_MDF           }, // was "MDF"
 	{"POnMsg", VOICE_ID_INVALID,                       MENU_PONMSG        },
 	{"BatTxt", VOICE_ID_INVALID,                       MENU_BAT_TXT       },
@@ -508,6 +510,14 @@ void UI_DisplayMenu(void)
 				strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
 				break;
 		#endif
+
+		case MENU_FL_BLINK:
+			strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
+			break;
+
+		case MENU_FSK_MSG:
+			strcpy(String, "SEND");
+			break;
 
 		case MENU_STEP: {
 			uint16_t step = gStepFrequencyTable[FREQUENCY_GetStepIdxFromSortedIdx(gSubMenuSelection)];

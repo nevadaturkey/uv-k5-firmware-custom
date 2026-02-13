@@ -1820,7 +1820,16 @@ void BK4819_PlayDTMFEx(bool bLocalLoopback, char Code)
 
 void BK4819_FskSend(void)
 {
+	// RX off/PA on
+	gBK4819_GpioOutState &= ~0x40;
+	gBK4819_GpioOutState |=  0x20;
+	BK4819_WriteRegister(BK4819_REG_33, gBK4819_GpioOutState);
+
+	// PA Bias: Max Power (0xFF), Enable, Gain > 28MHz
+	BK4819_WriteRegister(BK4819_REG_36, 0xFFA2);
+
 	BK4819_EnableTXLink();
+	SYSTEM_DelayMs(5);
 
 	BK4819_WriteRegister(BK4819_REG_58, 0x2F03);
 	BK4819_WriteRegister(BK4819_REG_72, 12389u);
@@ -1844,6 +1853,11 @@ void BK4819_FskSend(void)
 	BK4819_WriteRegister(BK4819_REG_59, 0x0068);
 	BK4819_WriteRegister(BK4819_REG_70, 0);
 	BK4819_WriteRegister(BK4819_REG_58, 0);
+
+	// PA off, RX on
+	gBK4819_GpioOutState &= ~0x20;
+	gBK4819_GpioOutState |=  0x40;
+	BK4819_WriteRegister(BK4819_REG_33, gBK4819_GpioOutState);
 
 	BK4819_TurnsOffTones_TurnsOnRX();
 }
